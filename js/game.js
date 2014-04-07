@@ -1,3 +1,25 @@
+var ws;
+var wireUp = function() {
+    if (!ws) {
+      ws = new WebSocket('ws://192.168.1.11:3000/events');
+    }
+
+    ws.onmessage = function(event) {
+      //console.log('event:', event);
+      var message = JSON.parse(event.data);
+      if (message.destination === 'button/pressing') {
+        me.input.triggerKeyEvent(me.input.KEY.SPACE, true);
+        setTimeout(function() {
+          me.input.triggerKeyEvent(me.input.KEY.SPACE, false);
+        }, 15);
+      }
+    };
+
+    ws.onopen = function() {
+      console.log('opening');
+      ws.send(JSON.stringify({ cmd: 'subscribe', name: 'button/pressing' }))
+    };
+};
 var game = {
   data: {
     score : 0,
@@ -16,6 +38,9 @@ var game = {
     me.loader.onload = this.loaded.bind(this);
     me.loader.preload(game.resources);
     me.state.change(me.state.LOADING);
+
+    wireUp();
+
   },
 
   "loaded": function() {
