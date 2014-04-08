@@ -1,7 +1,7 @@
 var ws;
 var wireUp = function() {
     if (!ws) {
-      ws = new WebSocket('ws://192.168.1.11:3000/events');
+      ws = new WebSocket('ws://localhost:3000/events');
     }
 
     ws.onmessage = function(event) {
