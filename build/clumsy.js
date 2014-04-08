@@ -81,6 +81,15 @@ game.resources = [
 	 {name: "hit", type: "audio", src: "data/sfx/"},
 	 {name: "lose", type: "audio", src: "data/sfx/"},
 ];
+function callHue(){
+  setTimeout(function(){
+    var req = new XMLHttpRequest();
+    req.open("POST","http://localhost:3000/clumsy-bird/Hue%20Hub%20001788fffe10857f",true);
+    req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    req.send("action=blink");
+  },200);
+}
+
 var BirdEntity = me.ObjectEntity.extend({
   init: function(x, y) {
     var settings = {};
@@ -144,6 +153,7 @@ var BirdEntity = me.ObjectEntity.extend({
       // give the time in ms since last frame
       // use it instead ?
       game.data.steps++;
+      callHue();
       me.audio.play('hit');
 
     } else {
